@@ -1,0 +1,70 @@
+# Keep the shelf current. Once a day, and from the Actions tab on demand, move every game to the tip of its own
+# main branch (`branch = main` in .gitmodules). If that moved anything, build the arcade and run the smoke test on
+# exactly that combination. Green, the move is committed to main and the site redeploys. Red, nothing is committed,
+# and the failed run (GitHub emails it) says which game broke the arcade. The games' own suites have already gated
+# their main; this is only the arcade's check on top.
+#
+# Why not Dependabot: for submodules it proposed commits that were not the tip of main (a two-week-old one, while
+# main was two days newer), so its pull requests would have moved games backwards, out of the arcade's support.
+name: Update the games
+
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit the move to main
+  actions: write    # start the deploy: a push made with this workflow's own token starts no workflow by itself
+
+concurrency:
+  group: update-games
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Move every game to the tip of its main
+        id: move
+        run: |
+          git submodule update --remote
+          if git diff --quiet; then
+            echo "Every game is already at the tip of its main."
+          else
+            git submodule status
+            echo "moved=$(git diff --name-only | sed 's#^games/##' | paste -sd ' ' -)" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.move.outputs.moved != ''
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            games/*/package-lock.json
+      - name: Install the arcade's tools and each game's
+        if: steps.move.outputs.moved != ''
+        run: |
+          npm ci
+          for game in games/*/; do (cd "$game" && npm ci --no-audit --no-fund); done
+      - name: Headless browser
+        if: steps.move.outputs.moved != ''
+        run: npx playwright-core install --with-deps chromium
+      - name: Build and smoke-test the moved games
+        if: steps.move.outputs.moved != ''
+        run: npm run build && npm test
+      - name: Commit the move and redeploy
+        if: steps.move.outputs.moved != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MOVED: ${{ steps.move.outputs.moved }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am "Games: $MOVED to the tip of main" -m "$(git submodule status)"
+          git push origin HEAD:main
+          gh workflow run pages.yml --ref main
