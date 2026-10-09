@@ -1,4 +1,4 @@
-# Arcade
+# The Making Game Arcade
 
 One shelf for the games: [Foodie Truck](https://github.com/ssinnott/foodie-truck) and
 [Aether & Brass](https://github.com/ssinnott/aether-and-brass), side by side in one web app you can install on a

@@ -29,8 +29,8 @@ export function manifestJson(games) {
   const titles = games.map((g) => g.title);
   const named = titles.length > 1 ? titles.slice(0, -1).join(', ') + ' and ' + titles[titles.length - 1] : titles.join('');
   return JSON.stringify({
-    name: 'Arcade',
-    short_name: 'Arcade',
+    name: 'The Making Game Arcade',
+    short_name: 'The Making Game Arcade',
     description: `${named}, on one shelf. Drawn and synthesized in code, and playable with no network once installed.`,
     id: './',
     start_url: './',

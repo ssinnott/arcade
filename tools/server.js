@@ -63,5 +63,5 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       'index.html': () => ['text/html; charset=utf-8', renderShelf(readGames())],
       'sw.js': () => ['text/javascript; charset=utf-8', DEV_SW],
     },
-  }).listen(port, () => console.log(`Arcade dev server: http://localhost:${port}/`));
+  }).listen(port, () => console.log(`The Making Game Arcade dev server: http://localhost:${port}/`));
 }
