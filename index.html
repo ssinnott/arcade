@@ -6,9 +6,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="Arcade">
+<meta name="apple-mobile-web-app-title" content="The Making Game Arcade">
 <meta name="theme-color" content="#14101a">
-<title>Arcade</title>
+<title>The Making Game Arcade</title>
 <!-- Home-screen app: tools/pwa.js generates the manifest, the icons and the worker. The shelf works without them. -->
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
@@ -86,7 +86,7 @@
 <body>
 <main id="shelf">
   <header>
-    <h1>ARCADE</h1>
+    <h1>THE MAKING GAME ARCADE</h1>
     <p>Pick a game. Each one plays here exactly as it does on its own site.</p>
   </header>
   <ul class="cards" id="cards"></ul>
@@ -199,7 +199,7 @@
       stage.hidden = false;
       shelf.hidden = true;
       document.body.classList.add('playing');
-      document.title = game.title + ' · Arcade';
+      document.title = game.title + ' · The Making Game Arcade';
       lastId = game.id;
       stopPad();
     }
@@ -217,7 +217,7 @@
       back.hidden = true;
       shelf.hidden = false;
       document.body.classList.remove('playing');
-      document.title = 'Arcade';
+      document.title = 'The Making Game Arcade';
       var card = cards.querySelector('.card[data-id="' + lastId + '"]') || cards.querySelector('.card');
       if (card) card.focus();
       startPad();
