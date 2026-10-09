@@ -145,6 +145,9 @@
     var src = el('a', '', 'arcade source');
     src.href = 'https://github.com/ssinnott/arcade';
     credits.append(src);
+    var kofi = el('a', '', 'support on ko-fi');
+    kofi.href = 'https://ko-fi.com/seansinnott';
+    credits.append(document.createTextNode('  ·  '), kofi);
 
     function el(tag, cls, text) {
       var n = document.createElement(tag);

@@ -6,6 +6,8 @@ phone and play with no network.
 
 **Play:** <https://ssinnott.github.io/arcade/>, published from `main` by GitHub Actions.
 
+**Support:** the games are free. If you want to chip in, <https://ko-fi.com/seansinnott>.
+
 **On a phone:** open that link and add it to your home screen (Android's *Install app*, or Share → *Add to Home
 Screen* on iOS). It opens on the shelf from its own icon, in landscape, with no browser chrome, and plays every game
 offline: the whole arcade is a handful of single pages, and an installed copy keeps all of them.
