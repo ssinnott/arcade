@@ -1,0 +1,8 @@
+[submodule "games/foodie-truck"]
+	path = games/foodie-truck
+	url = https://github.com/ssinnott/foodie-truck.git
+	branch = main
+[submodule "games/aether-and-brass"]
+	path = games/aether-and-brass
+	url = https://github.com/ssinnott/aether-and-brass.git
+	branch = main

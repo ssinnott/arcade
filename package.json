@@ -1,0 +1,17 @@
+{
+  "name": "arcade",
+  "version": "0.1.0",
+  "description": "One shelf for the games: each one a git submodule, built with its own tooling and played unmodified in its own frame. Installable, and playable offline.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node tools/build.js",
+    "dev": "node tools/server.js",
+    "test": "node tools/smoke.js",
+    "smoke": "node tools/smoke.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "playwright-core": "^1.63.0"
+  }
+}

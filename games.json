@@ -1,0 +1,20 @@
+[
+  {
+    "id": "foodie-truck",
+    "title": "Foodie Truck",
+    "blurb": "Cozy co-op cooking adventure: drive the truck, gather the ingredients, cook the order.",
+    "players": "1-4 players, on one couch or online",
+    "repo": "https://github.com/ssinnott/foodie-truck",
+    "accent": "#f2a65a",
+    "ground": "#2a1f1a"
+  },
+  {
+    "id": "aether-and-brass",
+    "title": "Aether & Brass",
+    "blurb": "Steampunk high-fantasy side-scrolling beat-em-up.",
+    "players": "1-4 players, on one couch or online",
+    "repo": "https://github.com/ssinnott/aether-and-brass",
+    "accent": "#e2b34a",
+    "ground": "#0b0710"
+  }
+]

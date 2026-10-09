@@ -1,0 +1,71 @@
+# Build the arcade and publish it to GitHub Pages.
+#
+# With Pages enabled on the repository (Settings -> Pages -> Source: GitHub Actions), a push to main redeploys
+# https://ssinnott.github.io/arcade/ . Every push and pull request builds and runs the smoke test; only main
+# deploys. Each game is checked out at the commit its submodule pins, built with its own tooling, and copied in.
+# The games' own suites run in their own repositories; what runs here is the arcade's: does every game build,
+# open, take keys, find its way back to the shelf, and keep working offline.
+name: Build and deploy the arcade
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            games/*/package-lock.json
+      - name: Install the arcade's tools
+        run: npm ci
+      - name: Install each game's build tools
+        run: for game in games/*/; do (cd "$game" && npm ci --no-audit --no-fund); done
+      # Covers are each game's title screen, captured headless; the smoke test drives the built site.
+      - name: Headless browser
+        run: npx playwright-core install --with-deps chromium
+      - name: Build (every game, its cover, the shelf, the installable-app files)
+        run: npm run build
+      - name: Smoke test
+        run: npm test
+      - name: Assemble the site
+        run: |
+          cp -r dist _site
+          touch _site/.nojekyll
+          ls -la _site _site/games/*
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
