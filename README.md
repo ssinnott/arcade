@@ -72,13 +72,15 @@ Node 22. Covers and the smoke test need Chromium (`npx playwright-core install c
 
 ## Keeping the games current
 
-The submodules follow each game's `main` (`branch = main` in `.gitmodules`). Every day Dependabot opens a pull
-request for each game whose `main` has moved. That pull request builds everything and runs the smoke test, and
-merging it deploys. To move a game by hand:
+The submodules follow each game's `main` (`branch = main` in `.gitmodules`). Once a day,
+`.github/workflows/update-games.yml` moves every game to the tip of its `main`, builds the arcade and runs the smoke
+test on that combination. If it passes, the move is committed to `main` and the site redeploys. If it fails, nothing
+moves, and the failed run (GitHub emails it) names the game that broke the arcade. Run it from the Actions tab to
+update straight away, or move a game by hand:
 
 ```
 git submodule update --remote games/foodie-truck
-git commit -am "Games: Foodie Truck to the latest main"
+git commit -am "Games: foodie-truck to the tip of main"
 ```
 
 ## Adding a game
